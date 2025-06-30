@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigiLocker - Digital Document Repository</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="DigiLocker - Your secure digital document repository for storing, managing, and sharing important documents.">
+    <meta name="keywords" content="digital locker, document storage, secure documents, file management">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📁</text></svg>">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-spinner"></div>
+        <p>Loading DigiLocker...</p>
+    </div>
+
+    <!-- Login Page -->
+    <div id="loginPage" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fas fa-folder-open"></i>
+                <h1>DigiLocker</h1>
+                <p>Your Digital Document Repository</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+                <button class="tab-btn" onclick="switchTab('register')">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <label>Email or Mobile</label>
+                    <input type="text" id="loginEmail" placeholder="Enter email or mobile number" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="registerName" placeholder="Enter full name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="registerEmail" placeholder="Enter email address" required>
+                </div>
+                <div class="form-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" id="registerMobile" placeholder="Enter mobile number" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="registerPassword" placeholder="Create password" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+                </div>
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <i class="fas fa-folder-open"></i>
+                <h1>DigiLocker</h1>
+            </div>
+            <div class="header-center">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search documents...">
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="notification-btn" title="Notifications">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-count">3</span>
+                </button>
+                <div class="user-menu">
+                    <button class="user-btn" onclick="toggleUserMenu()">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userName">User</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="#" onclick="showProfile()"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#" onclick="showSettings()"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#" onclick="exportData()"><i class="fas fa-download"></i> Export Data</a>
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" onclick="showSection('dashboard')">
+                    <i class="fas fa-home"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('documents')">
+                    <i class="fas fa-file-alt"></i> All Documents
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('categories')">
+                    <i class="fas fa-folder"></i> Categories
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('upload')">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('shared')">
+                    <i class="fas fa-share-alt"></i> Shared
+                </a>
+                <a href="#" class="nav-item" onclick="showSection('recent')">
+                    <i class="fas fa-clock"></i> Recent
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="content-section active">
+                <div class="section-header">
+                    <div>
+                        <h2>Dashboard</h2>
+                        <p>Welcome to your digital document repository</p>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalDocs">0</h3>
+                            <p>Total Documents</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-folder"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalCategories">8</h3>
+                            <p>Categories</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="sharedDocs">0</h3>
+                            <p>Shared Documents</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-hdd"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="storageUsed">0 MB</h3>
+                            <p>Storage Used</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-sections">
+                    <div class="quick-actions">
+                        <h3>Quick Actions</h3>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="showSection('upload')">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                Upload Document
+                            </button>
+                            <button class="action-btn" onclick="showSection('categories')">
+                                <i class="fas fa-folder"></i>
+                                Browse Categories
+                            </button>
+                            <button class="action-btn" onclick="shareDocument()">
+                                <i class="fas fa-share-alt"></i>
+                                Share Document
+                            </button>
+                            <button class="action-btn" onclick="exportData()">
+                                <i class="fas fa-download"></i>
+                                Export Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="recent-documents">
+                        <h3>Recent Documents</h3>
+                        <div id="recentDocsList" class="documents-list">
+                            <!-- Recent documents will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- All Documents Section -->
+            <section id="documentsSection" class="content-section">
+                <div class="section-header">
+                    <div>
+                        <h2>All Documents</h2>
+                        <p>Manage all your uploaded documents</p>
+                    </div>
+                    <div class="section-actions">
+                        <select id="sortSelect" onchange="sortDocuments()">
+                            <option value="date">Sort by Date</option>
+                            <option value="name">Sort by Name</option>
+                            <option value="size">Sort by Size</option>
+                            <option value="type">Sort by Type</option>
+                        </select>
+                        <button class="btn-secondary" onclick="showSection('upload')">
+                            <i class="fas fa-plus"></i> Add Document
+                        </button>
+                    </div>
+                </div>
+                <div id="allDocumentsList" class="documents-grid">
+                    <!-- All documents will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Categories Section -->
+            <section id="categoriesSection" class="content-section">
+                <div class="section-header">
+                    <div>
+                        <h2>Document Categories</h2>
+                        <p>Organize your documents by category</p>
+                    </div>
+                </div>
+                <div class="categories-grid" id="categoriesGrid">
+                    <!-- Categories will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Upload Section -->
+            <section id="uploadSection" class="content-section">
+                <div class="section-header">
+                    <div>
+                        <h2>Upload Document</h2>
+                        <p>Add new documents to your digital locker</p>
+                    </div>
+                </div>
+                <div class="upload-container">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Drag & Drop Files Here</h3>
+                        <p>or click to select files</p>
+                        <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.txt">
+                    </div>
+                    <div class="upload-form">
+                        <div class="form-group">
+                            <label>Document Category</label>
+                            <select id="documentCategory">
+                                <option value="aadhaar">Aadhaar Card</option>
+                                <option value="pan">PAN Card</option>
+                                <option value="driving">Driving License</option>
+                                <option value="passport">Passport</option>
+                                <option value="voter">Voter ID</option>
+                                <option value="education">Education Certificates</option>
+                                <option value="medical">Medical Records</option>
+                                <option value="other">Other Documents</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Document Name (Optional)</label>
+                            <input type="text" id="documentName" placeholder="Enter document name">
+                        </div>
+                        <div class="form-group">
+                            <label>Description (Optional)</label>
+                            <textarea id="documentDescription" placeholder="Enter document description"></textarea>
+                        </div>
+                        <button id="uploadBtn" class="btn-primary" onclick="uploadDocument()">
+                            <i class="fas fa-upload"></i> Upload Document
+                        </button>
+                    </div>
+                </div>
+                <div id="uploadProgress" class="upload-progress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p id="progressText">Uploading...</p>
+                </div>
+            </section>
+
+            <!-- Shared Documents Section -->
+            <section id="sharedSection" class="content-section">
+                <div class="section-header">
+                    <div>
+                        <h2>Shared Documents</h2>
+                        <p>Documents you've shared with others</p>
+                    </div>
+                </div>
+                <div id="sharedDocsList" class="documents-grid">
+                    <!-- Shared documents will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Recent Documents Section -->
+            <section id="recentSection" class="content-section">
+                <div class="section-header">
+                    <div>
+                        <h2>Recent Documents</h2>
+                        <p>Recently accessed documents</p>
+                    </div>
+                </div>
+                <div id="recentDocsGrid" class="documents-grid">
+                    <!-- Recent documents will be loaded here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Document Viewer Modal -->
+    <div id="documentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalDocTitle">Document Title</h3>
+                <div class="modal-actions">
+                    <button class="btn-icon" onclick="downloadDocument()" title="Download">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="btn-icon" onclick="shareDocument()" title="Share">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
+                    <button class="btn-icon" onclick="deleteDocument()" title="Delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="btn-icon" onclick="closeModal()" title="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="documentViewer" class="document-viewer">
+                    <!-- Document content will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Share Document</h3>
+                <button class="btn-icon" onclick="closeShareModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="share-options">
+                    <div class="form-group">
+                        <label>Share with Email</label>
+                        <input type="email" id="shareEmail" placeholder="Enter email address">
+                    </div>
+                    <div class="form-group">
+                        <label>Access Level</label>
+                        <select id="accessLevel">
+                            <option value="view">View Only</option>
+                            <option value="download">View & Download</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Share Link</label>
+                        <div class="share-link">
+                            <input type="text" id="shareLink" readonly>
+                            <button onclick="copyShareLink()">Copy</button>
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="sendShareInvite()">
+                        <i class="fas fa-share"></i> Share Document
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>User Profile</h3>
+                <button class="btn-icon" onclick="closeProfileModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-info">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-details">
+                        <h4 id="profileName">User Name</h4>
+                        <p id="profileEmail">user@example.com</p>
+                        <p id="profileMobile">+91 9876543210</p>
+                    </div>
+                </div>
+                <div class="profile-stats">
+                    <div class="stat">
+                        <span class="stat-label">Total Documents</span>
+                        <span class="stat-value" id="profileTotalDocs">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Storage Used</span>
+                        <span class="stat-value" id="profileStorageUsed">0 MB</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Member Since</span>
+                        <span class="stat-value" id="profileMemberSince">Jan 2024</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="auth.js"></script>
+    <script src="storage.js"></script>
+    <script src="documents.js"></script>
+    <script src="ui.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
